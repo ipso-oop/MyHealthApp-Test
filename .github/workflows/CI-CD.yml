@@ -20,7 +20,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Unit & Integration Tests (Jest + Supertest)
+      - name: Run Unit (Jest)
         run: npm test sendAccessNotification.test.js
 
       - name: Deploy to Netlify Staging (TEST)
@@ -29,21 +29,23 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEST_SITE_ID }}
         with:
-          args: deploy --dir=build --alias=staging
+          args: deploy --dir=build --prod
           
-      - name: Run Unit & Integration Tests (Jest + Supertest)
-        run: npm test sendAccessNotification.test.js
+      - name: Run Unit Integration Tests (Supertest)
+        env:
+         TEST_URL: 'https://myhealth-app-test.netlify.app/' # URL als Umgebungsvariable
+        run: npm test app.test.js
 
       - name: Run Postman Tests (Newman gegen Test-Site)
         run: |
           npm install -g newman
-          newman run postman/api_tests.postman_collection.json \
-            --env-var "baseUrl=https://staging--<deine-test-site>.netlify.app"
+          newman run health_app_tests.postman_collection.json \
+            --env-var "baseUrl=https://myhealth-app-test.netlify.app"
 
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build-and-test
-    if: success()
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4

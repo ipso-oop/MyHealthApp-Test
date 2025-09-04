@@ -30,6 +30,7 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEST_SITE_ID }}
         with:
           args: deploy --dir=build --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_TEST_SITE_ID"]'
           
       - name: Run Unit Integration Tests (Supertest)
         env:
@@ -46,13 +47,14 @@ jobs:
     needs: build-and-test
 
     steps:
-      - name: 📥 Checkout Code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🚀 Deploy to Netlify Production
+      - name: Deploy to Netlify Production
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROD_SITE_ID }}
         with:
           args: deploy --dir=build --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_PROD_SITE_ID"]'

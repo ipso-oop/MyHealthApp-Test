@@ -61,6 +61,9 @@ const httpErrorCounter = new promclient.Counter({
   labelNames: ['status'],
 });
 
+function generateAccessCode(length = 8) {
+  return Math.random().toString(36).substr(2, length);
+}
 
 
 // Verbindung zu MongoDB herstellen
@@ -189,7 +192,7 @@ app.post('/health_data/delete', async (req, res) => {
 app.post('/health_data/share', async (req, res) => {
   const { healthDataId } = req.body;
   console.log(req.body);
-  const accessCode = Math.random().toString(36).substr(2, 8);
+  const accessCode = generateAccessCode(8);
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 Stunde gültig
   await connectToDB();
   await db.collection('access_links').insertOne({ healthDataId, accessCode, expiresAt });
@@ -235,4 +238,4 @@ async function sendAccessNotification(userId) {
   console.log('Server läuft auf http://localhost:3000');
 });*/
 
-module.exports = { app,sendAccessNotification,setDb };
+module.exports = { app,sendAccessNotification,setDb,connectToDB,generateAccessCode };

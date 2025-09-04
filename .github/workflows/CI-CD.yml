@@ -39,8 +39,7 @@ jobs:
       - name: Run Postman Tests (Newman gegen Test-Site)
         run: |
           npm install -g newman
-          newman run health_app_tests.postman_collection.json \
-            --env-var "baseUrl=https://myhealth-app-test.netlify.app"
+          newman run health_app_tests.postman_collection.json --env-var "base_url=https://myhealth-app-test.netlify.app"
 
   deploy-prod:
     runs-on: ubuntu-latest

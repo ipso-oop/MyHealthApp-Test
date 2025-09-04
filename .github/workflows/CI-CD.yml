@@ -29,8 +29,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEST_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_TEST_SITE_ID"]'
+          args: deploy --prod
           
       - name: Run Unit Integration Tests (Supertest)
         env:
@@ -56,5 +55,4 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROD_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_PROD_SITE_ID"]'
+          args: deploy --prod

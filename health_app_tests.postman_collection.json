@@ -1,0 +1,151 @@
+{
+  "info": {
+    "name": "Health App API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab"
+  },
+  "item": [
+    {
+      "name": "GET / (Homepage)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        }
+      },
+      "response": [],
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test(\"Status code is 200\", function () {",
+            "    pm.response.to.have.status(200);",
+            "});"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "GET /register",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/register",
+          "host": ["{{base_url}}"],
+          "path": ["register"]
+        }
+      },
+      "response": [],
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test(\"Register page reachable\", function () {",
+            "    pm.response.to.have.status(200);",
+            "});"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "POST /register (neuer Benutzer)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"postman_user\",\n  \"password\": \"testpass123\",\n  \"email\": \"postman@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/register",
+          "host": ["{{base_url}}"],
+          "path": ["register"]
+        }
+      },
+      "response": [],
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test(\"Redirect or error (200–302 or 500)\", function () {",
+            "    pm.expect(pm.response.code).to.be.oneOf([200, 302, 500]);",
+            "});"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "POST /login (falsche Daten)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"wronguser\",\n  \"password\": \"wrongpass\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/login",
+          "host": ["{{base_url}}"],
+          "path": ["login"]
+        }
+      },
+      "response": [],
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test(\"Login sollte fehlschlagen\", function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.expect(pm.response.text()).to.include(\"Login fehlgeschlagen\");",
+            "});"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "GET /metrics (mit Auth)",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            { "key": "username", "value": "admin" },
+            { "key": "password", "value": "admin123" }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/metrics",
+          "host": ["{{base_url}}"],
+          "path": ["metrics"]
+        }
+      },
+      "response": [],
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test(\"Metrics verfügbar\", function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.expect(pm.response.text()).to.include(\"http_requests_total\");",
+            "});"
+          ]
+        }
+      }]
+    }
+  ]
+}

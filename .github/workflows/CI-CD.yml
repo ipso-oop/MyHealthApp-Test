@@ -29,7 +29,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEST_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
+          args: deploy --prod
           
       - name: Run Unit Integration Tests (Supertest)
         env:
@@ -39,21 +39,29 @@ jobs:
       - name: Run Postman Tests (Newman gegen Test-Site)
         run: |
           npm install -g newman
-          newman run health_app_tests.postman_collection.json \
-            --env-var "baseUrl=https://myhealth-app-test.netlify.app"
+          newman run health_app_tests.postman_collection.json --env-var "base_url=https://myhealth-app-test.netlify.app"
 
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build-and-test
 
     steps:
-      - name: 📥 Checkout Code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🚀 Deploy to Netlify Production
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Deploy to Netlify Production
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROD_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
+          args: deploy --prod

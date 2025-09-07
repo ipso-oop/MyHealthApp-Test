@@ -2,10 +2,11 @@ name: k6 Load Test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  run-k6-performance-test:
+  run-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,4 +17,5 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1
         with:
-          path: K6-Test.js
+          path: |
+            ./K6-Test.js

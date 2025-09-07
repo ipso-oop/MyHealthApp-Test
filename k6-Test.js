@@ -20,7 +20,7 @@ export let options = {
 };
 
 export default function () {
-  const res = http.get('http://localhost:8888');
+  const res = http.get('https://myhealth-app-test.netlify.app');
   check(res, { 'Status ist 200': (r) => r.status === 200 });
   sleep(1);
 }

@@ -16,6 +16,5 @@ jobs:
         uses: grafana/setup-k6-action@main
       - name: Run local k6 test
         uses: grafana/run-k6-action@main
-      - uses: ./
         with:
           path: K6-Test.js

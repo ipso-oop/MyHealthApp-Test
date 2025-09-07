@@ -18,5 +18,4 @@ jobs:
         uses: grafana/run-k6-action@main
       - uses: ./
         with:
-          path: |
-            ./K6-Test.js
+          path: K6-Test.js

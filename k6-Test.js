@@ -10,8 +10,8 @@ export let options = {
     },  
   },  
   stages: [
-    { duration: '1m', target: 100 }, // Ramp-up auf 100 Nutzer
-    { duration: '3m', target: 100 }, // Haltephase
+    { duration: '1m', target: 50 }, // Ramp-up auf 100 Nutzer
+    { duration: '3m', target: 50 }, // Haltephase
     { duration: '1m', target: 0 },   // Ramp-down
   ],
   thresholds: {

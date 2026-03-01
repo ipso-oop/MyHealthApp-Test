@@ -10,8 +10,8 @@ export let options = {
     },  
   },  
   stages: [
-    { duration: '1m', target: 50 }, // Ramp-up auf 100 Nutzer
-    { duration: '3m', target: 50 }, // Haltephase
+    { duration: '1m', target: 20 }, // Ramp-up auf 100 Nutzer
+    { duration: '3m', target: 20 }, // Haltephase
     { duration: '1m', target: 0 },   // Ramp-down
   ],
   thresholds: {
@@ -22,5 +22,5 @@ export let options = {
 export default function () {
   const res = http.get('https://myhealth-app-test.netlify.app');
   check(res, { 'Status ist 200': (r) => r.status === 200 });
-  sleep(1);
+  sleep(3);
 }

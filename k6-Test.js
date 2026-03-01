@@ -10,12 +10,13 @@ export let options = {
     },  
   },  
   stages: [
-    { duration: '1m', target: 20 }, // Ramp-up auf 100 Nutzer
-    { duration: '3m', target: 20 }, // Haltephase
+    { duration: '1m', target: 10 }, // Ramp-up auf 100 Nutzer
+    { duration: '3m', target: 10 }, // Haltephase
     { duration: '1m', target: 0 },   // Ramp-down
   ],
   thresholds: {
     http_req_duration: ['p(95)<500'], // 95% unter 500ms
+     http_req_failed: ['rate<0.01'], // max 1% Fehler
   },
 };
 

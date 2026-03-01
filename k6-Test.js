@@ -9,19 +9,20 @@ export let options = {
       },  
     },  
   },  
-  limited: {
-      executor: 'constant-arrival-rate',
-      rate: 8,            // 480 RPM
+   scenarios: {
+    limited_with_stages: {
+      executor: 'ramping-arrival-rate',
+      startRate: 2,         // 120 RPM
       timeUnit: '1s',
-      duration: '5m',
+      stages: [
+        { target: 8, duration: '1m' },  // 480 RPM
+        { target: 8, duration: '3m' },  // halten
+        { target: 0, duration: '1m' },  // runterfahren
+      ],
       preAllocatedVUs: 5,
-      maxVUs: 10,         // <- weniger gleichzeitige Verbindungen
+      maxVUs: 10,           // begrenzt Parallelität
     },
-  stages: [
-    { duration: '1m', target: 10 }, // Ramp-up auf 10 Nutzer
-    { duration: '3m', target: 10 }, // Haltephase
-    { duration: '1m', target: 0 },   // Ramp-down
-  ],
+  },
   thresholds: {
     http_req_duration: ['p(95)<500'], // 95% unter 500ms
      http_req_failed: ['rate<0.01'], // max 1% Fehler

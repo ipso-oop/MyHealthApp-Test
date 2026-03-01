@@ -9,8 +9,16 @@ export let options = {
       },  
     },  
   },  
+  limited: {
+      executor: 'constant-arrival-rate',
+      rate: 8,            // 480 RPM
+      timeUnit: '1s',
+      duration: '5m',
+      preAllocatedVUs: 5,
+      maxVUs: 10,         // <- weniger gleichzeitige Verbindungen
+    },
   stages: [
-    { duration: '1m', target: 10 }, // Ramp-up auf 100 Nutzer
+    { duration: '1m', target: 10 }, // Ramp-up auf 10 Nutzer
     { duration: '3m', target: 10 }, // Haltephase
     { duration: '1m', target: 0 },   // Ramp-down
   ],
